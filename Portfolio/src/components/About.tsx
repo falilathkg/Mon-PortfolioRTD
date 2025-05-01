@@ -212,9 +212,9 @@ const aboutSections = [
 ];
 
 export default function About() {
-  const [openSection, setOpenSection] = useState(null);
+  const [openSection, setOpenSection] = useState<number | null>(null);
 
-  const toggleSection = (id) => {
+  const toggleSection = (id: number) => {
     setOpenSection(openSection === id ? null : id);
   };
 

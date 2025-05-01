@@ -37,38 +37,89 @@
 
 // export default Navbar;
 
-import { Container } from "lucide-react";
+import { useState } from "react";
+import { Container, Menu, X } from "lucide-react";
 
 const Navbar = () => {
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-md px-8 py-4 flex justify-between items-center">
-      {/* Logo */}
-      <a
-        href="#"
-        className="flex items-center gap-2 text-2xl font-extrabold text-gray-900 hover:scale-105 transition-transform"
-      >
-        <Container className="text-accent w-8 h-8" />
-        <span>Falilath</span>
-        <span className="text-accent">KORA GUERRA</span>
-      </a>
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-      {/* Navigation Links */}
-      <nav>
-        <ul className="hidden md:flex gap-8 text-md font-medium items-center">
-          {["Home", "About", "Skills", "Projects"].map((item, idx) => (
-            <li key={idx}>
-              <a
-                href={`#${item.toLowerCase()}`}
-                className="relative inline-block py-1 text-gray-700 hover:text-accent transition-all group"
-              >
-                {item}
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[2px] bg-accent transition-all group-hover:w-full"></span>
-              </a>
-            </li>
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const navItems = ["Home", "About", "Skills", "Projects"];
+
+  return (
+    <>
+      {/* Barre de navigation principale */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-md px-8 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <a
+          href="#"
+          className="flex items-center gap-2 text-2xl font-extrabold text-gray-900 hover:scale-105 transition-transform"
+        >
+          <Container className="text-accent w-8 h-8" />
+          <span>Falilath</span>
+          <span className="text-accent">KORA GUERRA</span>
+        </a>
+
+        {/* Liens desktop */}
+        <nav>
+          <ul className="hidden md:flex gap-8 text-md font-medium items-center">
+            {navItems.map((item, idx) => (
+              <li key={idx}>
+                <a
+                  href={`#${item.toLowerCase()}`}
+                  className="relative inline-block py-1 text-gray-700 hover:text-accent transition-all group"
+                >
+                  {item}
+                  <span className="absolute left-0 -bottom-0.5 w-0 h-[2px] bg-accent transition-all group-hover:w-full"></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Bouton menu mobile */}
+        <button
+          className="md:hidden text-accent"
+          onClick={toggleSidebar}
+          aria-label="Toggle menu"
+        >
+          {sidebarOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
+      </header>
+
+      {/* Sidebar mobile */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md z-40 transform transition-transform duration-300 md:hidden ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <nav className="flex flex-col pt-24 px-6 gap-4 text-gray-800 font-medium h-full overflow-y-auto">
+          {navItems.map((item, idx) => (
+            <a
+              key={idx}
+              href={`#${item.toLowerCase()}`}
+              onClick={() => setSidebarOpen(false)}
+              className="hover:text-accent transition"
+            >
+              {item}
+            </a>
           ))}
-        </ul>
-      </nav>
-    </header>
+        </nav>
+      </div>
+
+      {/* Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
